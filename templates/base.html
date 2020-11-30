@@ -1,0 +1,65 @@
+{% load static %}
+{% load blog_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link href="{% static 'plugins/css/bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet">
+
+  {% block css %}{% endblock %}
+
+  <!-- My CSS  -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-md navbar-light bg-light shadow">
+    <div class="container-md">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
+              aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggler">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item {% active request 'home' %}">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">About me</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">Github</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container mt-5">
+  <main>
+    {% block content%}
+    {% endblock %}
+  </main>
+</div>
+
+
+<script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}"></script>
+{% block js %}{% endblock %}
+</body>
+</html>
+

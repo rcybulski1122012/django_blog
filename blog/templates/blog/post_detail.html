@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load martortags %}
+{% load static %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block css %}
+  <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet">
+  <link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+  <header>
+    <h2>{{ object.title }}</h2>
+    <p>{{ object.description }}</p>
+  </header>
+  <article class="martor-preview">
+    {{ object.content|safe_markdown }}
+  </article>
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+  <script>
+    $('.martor-preview pre').each(function(i, block){
+        hljs.highlightBlock(block);
+    });
+  </script>
+{% endblock %}
