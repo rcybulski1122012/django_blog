@@ -1,4 +1,5 @@
-# from django.shortcuts import render
+from django.contrib.postgres.search import TrigramSimilarity
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
 from blog.models import Post
@@ -14,3 +15,11 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):
     model = Post
+
+
+def search(request):
+    query = request.GET.get('query')
+    posts = Post.objects.annotate(
+        similarity=TrigramSimilarity('title', query),
+    ).filter(similarity__gt=0.3, published=True).order_by('-similarity')
+    return render(request, 'blog/search.html', {'query': query, 'posts': posts})
