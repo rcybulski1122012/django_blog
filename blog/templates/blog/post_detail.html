@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load martortags %}
 {% load static %}
+{% load crispy_forms_tags %}
 
-{% block title %}{{ object.title }}{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block css %}
   <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet">
@@ -11,13 +12,32 @@
 
 
 {% block content %}
-  <header>
-    <h2>{{ object.title }}</h2>
-    <p>{{ object.description }}</p>
-  </header>
-  <article class="martor-preview">
-    {{ object.content|safe_markdown }}
+  <article class="martor-preview" id="blog post">
+    <header>
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.description }}</p>
+    </header>
+    {{ post.content|safe_markdown }}
   </article>
+  <hr class="mt-5">
+  <article id="comments">
+    <header>
+      <h4>Comments</h4>
+    </header>
+    {% for comment in post.comments.all %}
+      <div class="comment">
+        <h5 class="comment-header">{{ comment.author }} writes:</h5>
+        <p class="comment-content">{{ comment.content|linebreaksbr }}</p>
+      </div>
+    {% endfor %}
+    <form action="" method="post">
+      {{ comment_form|crispy }}
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-secondary">Comment</button>
+    </form>
+
+  </article>
+
 {% endblock %}
 
 {% block js %}

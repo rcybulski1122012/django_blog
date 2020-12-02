@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'martor'
+    'martor',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,7 @@ STATIC_ROOT = 'static/'
 # Martor (markdown editor)
 
 MARTOR_THEME = 'bootstrap'
+
+# Crispy forms
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
