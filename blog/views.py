@@ -1,17 +1,30 @@
 from django.contrib.postgres.search import TrigramSimilarity
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.contrib import messages
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 
 from blog.forms import CommentForm
 from blog.models import Post
 
 
-class PostListView(ListView):
-    model = Post
-    template_name = 'blog/home.html'
+def post_list(request):
+    posts = Post.objects.filter(published=True)
+    paginator = Paginator(posts, 10)
+    page = request.GET.get('page')
 
-    def get_queryset(self):
-        return super().get_queryset().filter(published=True)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        if request.is_ajax():
+            return HttpResponse('')
+        posts = paginator.page(paginator.num_pages)
+    if request.is_ajax():
+        return render(request, 'blog/post_ajax.html', {'posts': posts})
+    return render(request, 'blog/home.html', {'posts': posts})
 
 
 def post_detail(request, slug):
@@ -22,6 +35,7 @@ def post_detail(request, slug):
             comment = comment_form.save(commit=False)
             comment.post = post
             comment.save()
+            return redirect(reverse('post_detail', args=[post.slug]))
     else:
         comment_form = CommentForm()
     return render(request, 'blog/post_detail.html', {'post': post, 'comment_form': comment_form})

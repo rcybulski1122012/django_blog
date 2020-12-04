@@ -24,13 +24,30 @@
     <header>
       <h4>Comments</h4>
     </header>
-    {% for comment in post.comments.all %}
+    {% with comments=post.comments.all %}
+    {% for comment in comments|slice:":5" %}
       <div class="comment">
         <h5 class="comment-header">{{ comment.author }} writes:</h5>
         <p class="comment-content">{{ comment.content|linebreaksbr }}</p>
       </div>
     {% endfor %}
-    <form action="" method="post">
+    <div id="hidden-comments" class="d-none">
+      {% for comment in comments|slice:"5:" %}
+        <div class="comment">
+          <h5 class="comment-header">{{ comment.author }} writes:</h5>
+          <p class="comment-content">{{ comment.content|linebreaksbr }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    {% if comments.count > 5 %}
+    <div class="text-center">
+      <button class="btn btn-outline-secondary my-4" onclick="reveal_hidden_comments();" id="all-comments-btn">
+        All comments
+      </button>
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form method="post">
       {{ comment_form|crispy }}
       {% csrf_token %}
       <button type="submit" class="btn btn-outline-secondary">Comment</button>
@@ -46,5 +63,10 @@
     $('.martor-preview pre').each(function(i, block){
         hljs.highlightBlock(block);
     });
+
+    function reveal_hidden_comments(){
+      $('#hidden-comments').removeClass('d-none');
+      $('#all-comments-btn').hide();
+    }
   </script>
 {% endblock %}

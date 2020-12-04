@@ -4,10 +4,34 @@
 
 
 {% block content %}
-  {% for post in object_list %}
-    {% include 'blog/post.html' with post=post %}
-  {% empty %}
-    <p>?</p>
-  {% endfor %}
+  <article id="post-list">
+    {% for post in posts %}
+      {% include 'blog/post.html' with post=post %}
+    {% endfor %}
+  </article>
+{% endblock %}
+
+{% block domready %}
+  var page = 1;
+  var empty_page = false;
+  var block_request = false;
+
+  $(window).scroll(function() {
+      var position = $(window).scrollTop();
+      var bottom = $(document).height() - $(window).height();
+      if (position == bottom && empty_page == false && block_request == false) {
+        block_request = true;
+        page += 1;
+        $.get('?page=' + page, function(data) {
+          if(data == ''){
+            empty_page = true;
+          }
+          else {
+            block_request = false;
+            $('#post-list').append(data);
+          }
+        });
+      }
+  });
 {% endblock %}
 

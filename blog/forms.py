@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from blog.models import Comment
 
@@ -11,3 +12,9 @@ class CommentForm(forms.ModelForm):
         labels = {
             'content': 'Comment'
         }
+
+    def clean_content(self):
+        content = self.cleaned_data['content']
+        if content.count('\n') > 7:
+            raise ValidationError("To many line breaks!")
+        return content

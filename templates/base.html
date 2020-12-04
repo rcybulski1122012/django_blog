@@ -53,7 +53,17 @@
   </nav>
 </header>
 
+
+
 <div class="container mt-5">
+  {% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
   <main>
     {% block content%}
     {% endblock %}
@@ -63,7 +73,28 @@
 
 <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
 {% block js %}{% endblock %}
+
+<script>
+    var csrftoken = Cookies.get('csrftoken');
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+      }
+    });
+
+    $(document).ready(function(){
+      {% block domready %}
+      {% endblock %}
+    });
+  </script>
 </body>
 </html>
 

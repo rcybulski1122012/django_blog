@@ -1,3 +1,19 @@
-body {
-    background-color: red !importan;
+.post-link:hover {
+    color: gray !important;
+}
+
+.description {
+    color: gray !important;
+}
+
+#comments {
+    color: gray !important;
+}
+
+.comment-content {
+    font-size: 14px;
+}
+
+.comment-header {
+    font-size: 16px;
 }
