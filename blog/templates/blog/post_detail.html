@@ -14,8 +14,16 @@
 {% block content %}
   <article class="martor-preview" id="blog post">
     <header>
-      <h2>{{ post.title }}</h2>
-      <p>{{ post.description }}</p>
+      <div class="row">
+        <div class="col-md-8">
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.description }}</p>
+        </div>
+        <div class="col-md-4 text-md-right">
+          <button class="btn btn-outline-primary" id="like">{% if liked %}Unlike{% else %}Like{% endif%}</button>
+          <div class="my-2">Total likes: <span id="total_likes" class="bold">{{ likes }}</span></div>
+        </div>
+      </div>
     </header>
     {{ post.content|safe_markdown }}
   </article>
@@ -41,7 +49,7 @@
     </div>
     {% if comments.count > 5 %}
     <div class="text-center">
-      <button class="btn btn-outline-secondary my-4" onclick="reveal_hidden_comments();" id="all-comments-btn">
+      <button class="btn btn-outline-secondary my-4" id="all-comments-btn">
         All comments
       </button>
     </div>
@@ -64,9 +72,24 @@
         hljs.highlightBlock(block);
     });
 
-    function reveal_hidden_comments(){
+    $('#all-comments-btn').click(function(){
       $('#hidden-comments').removeClass('d-none');
       $('#all-comments-btn').hide();
-    }
+    });
+
+    $('#like').click(function(){
+      total_likes = parseInt($('#total_likes').text());
+      like_or_unlike = $('#like').text()
+      $.post("{% url 'post_like' %}", { post_id: {{ post.id }} }, function(data){
+        if (like_or_unlike == 'Like'){
+          $('#like').text('Unlike');
+        }
+        else {
+          $('#like').text('Like');
+        }
+        $('#total_likes').text(data)
+      });
+    });
+
   </script>
 {% endblock %}

@@ -8,6 +8,7 @@ django = "*"
 martor = "*"
 psycopg2-binary = "*"
 django-crispy-forms = "*"
+redis = "*"
 
 [dev-packages]
 

@@ -5,7 +5,7 @@ from blog.models import Post, Comment
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created', 'published')
+    list_display = ('id', 'title', 'created', 'published')
     list_filter = ('created', 'published')
     prepopulated_fields = {'slug': ('title',)}
 

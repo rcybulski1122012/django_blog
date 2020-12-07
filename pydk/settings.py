@@ -76,14 +76,15 @@ WSGI_APPLICATION = 'pydk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'blog',
         'USER': 'blog',
-        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': '127.0.0.1',
-        'POST': '5432',
+        'PORT': '5432',
     }
 }
 
@@ -146,3 +147,12 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+# Redis
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0
+
+# sessions
+SESSION_COOKIE_AGE = 3153600000

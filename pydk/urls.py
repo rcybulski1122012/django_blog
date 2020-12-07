@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.post_list, name='home'),
     path('search/', views.search, name='search'),
+    path('post_like/', views.post_like, name='post_like'),
     path('<slug:slug>/', views.post_detail, name='post_detail'),
     path('martor/', include('martor.urls')),
 ]
