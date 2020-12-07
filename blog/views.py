@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
+from django.views.generic import TemplateView
 
 from blog.forms import CommentForm
 from blog.models import Post
@@ -67,3 +68,11 @@ def search(request):
         similarity=TrigramSimilarity('title', query),
     ).filter(similarity__gt=0.3, published=True).order_by('-similarity')
     return render(request, 'blog/search.html', {'query': query, 'posts': posts})
+
+
+class AboutMeView(TemplateView):
+    template_name = 'about_me.html'
+
+
+class ContactInfoView(TemplateView):
+    template_name = 'contact_info.html'

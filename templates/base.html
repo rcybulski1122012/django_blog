@@ -10,12 +10,11 @@
   <!-- Bootstrap CSS -->
   <link href="{% static 'plugins/css/bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet">
 
-  {% block css %}{% endblock %}
 
-  <!-- My CSS  -->
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
 
+  {% block css %}{% endblock %}
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
@@ -32,17 +31,19 @@
             <a class="nav-link" href="{% url 'home' %}">Home</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">About me</a>
+          <li class="nav-item {% active request 'about_me' %}">
+            <a class="nav-link" href="{% url 'about_me' %}">About me</a>
+          </li>
+
+          <li class="nav-item {% active request 'contact_info' %}">
+            <a class="nav-link" href="{% url 'contact_info' %}">Contact</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="">Github</a>
+            <a class="nav-link" href="https://github.com/rcybulski1122012">Github</a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
+
         </ul>
         <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="get">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="query">
