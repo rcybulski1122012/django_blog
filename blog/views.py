@@ -6,17 +6,19 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_POST
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from blog.forms import CommentForm
-from blog.models import Post
-
+from blog.models import Post, Category
 
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
 def post_list(request):
+    category_slug = request.GET.get('c', None)
     posts = Post.objects.filter(published=True)
+    if category_slug:
+        posts = posts.filter(category__slug=category_slug)
     paginator = Paginator(posts, 10)
     page = request.GET.get('page')
 
@@ -76,3 +78,7 @@ class AboutMeView(TemplateView):
 
 class ContactInfoView(TemplateView):
     template_name = 'contact_info.html'
+
+
+class CategoryListView(ListView):
+    model = Category

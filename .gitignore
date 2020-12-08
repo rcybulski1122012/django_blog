@@ -115,3 +115,6 @@ media/
 # !**/migrations/__init__.py
 
 .idea/
+
+# collected static files
+static/

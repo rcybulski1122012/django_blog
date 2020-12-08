@@ -25,6 +25,9 @@ urlpatterns = [
     path('post_like/', views.post_like, name='post_like'),
     path('contact_info/', views.ContactInfoView.as_view(), name='contact_info'),
     path('about_me/', views.AboutMeView.as_view(), name='about_me'),
-    path('<slug:slug>/', views.post_detail, name='post_detail'),
+    path('posts/<slug:slug>/', views.post_detail, name='post_detail'),
+    path('categories/', views.CategoryListView.as_view(), name='categories'),
     path('martor/', include('martor.urls')),
+
+
 ]
