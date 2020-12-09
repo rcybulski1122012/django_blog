@@ -72,3 +72,13 @@ def search(request):
     return render(request, 'blog/search.html', {'query': query, 'posts': posts})
 
 
+class AboutMeView(TemplateView):
+    template_name = 'about_me.html'
+
+
+class ContactInfoView(TemplateView):
+    template_name = 'contact_info.html'
+
+
+class CategoryListView(ListView):
+    model = Category
