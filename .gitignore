@@ -118,3 +118,5 @@ media/
 
 # collected static files
 static/
+Pipfile
+Pipfile.lock
