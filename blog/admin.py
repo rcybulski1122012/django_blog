@@ -6,7 +6,7 @@ from blog.views import r
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created', 'published', 'number_of_likes')
+    list_display = ('title', 'created', 'published', 'number_of_likes', 'number_of_views')
     list_filter = ('created', 'published')
     prepopulated_fields = {'slug': ('title',)}
     actions = ['publish_selected', 'hide_selected']
@@ -16,6 +16,14 @@ class PostAdmin(admin.ModelAdmin):
         likes = r.get(f'post:{obj.id}:likes')
         if likes is not None:
             return int(likes)
+        else:
+            return 0
+
+    @staticmethod
+    def number_of_views(obj):
+        views = r.get(f'post:{obj.id}:views')
+        if views is not None:
+            return int(views)
         else:
             return 0
 

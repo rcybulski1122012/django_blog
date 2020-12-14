@@ -38,6 +38,7 @@ def post_list(request):
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
+    r.incr(f'post:{post.id}:views')
     likes = int(r.get(f'post:{post.id}:likes') or 0)
     liked = request.session.get(f'like-{post.id}', False)
     if request.method == "POST":
