@@ -16,5 +16,5 @@ class CommentForm(forms.ModelForm):
     def clean_content(self):
         content = self.cleaned_data['content']
         if content.count('\n') > 7:
-            raise ValidationError("To many line breaks!")
+            raise ValidationError('To many line breaks!')
         return content

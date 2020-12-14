@@ -2,11 +2,12 @@
 
 {% block title %}Home Page{% endblock %}
 
-
 {% block content %}
   <article id="post-list">
     {% for post in posts %}
       {% include 'blog/post.html' with post=post %}
+    {% empty %}
+      No posts yet.
     {% endfor %}
   </article>
 {% endblock %}
@@ -34,4 +35,3 @@
       }
   });
 {% endblock %}
-

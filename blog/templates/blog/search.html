@@ -7,6 +7,6 @@
   {% for post in posts %}
     {% include 'blog/post.html' with post=post %}
   {% empty %}
-    <p>?</p>
+    <p>There are no posts matching the query.</p>
   {% endfor %}
 {% endblock %}

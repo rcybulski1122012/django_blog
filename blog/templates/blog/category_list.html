@@ -3,7 +3,7 @@
 {% block title %}Categories{% endblock %}
 
 {% block content %}
-  {% for obj in object_list %}
-  <a href="{% url 'home' %}?c={{ obj.slug }}"><h3>{{ obj.name }}</h3></a>
+  {% for category in categories %}
+    <a href="{% url 'home' %}?c={{ category.slug }}"><h3>{{ category.name }}</h3></a>
   {% endfor %}
 {% endblock %}

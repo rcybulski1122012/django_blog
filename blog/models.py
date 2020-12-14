@@ -30,6 +30,9 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def __repr__(self):
+        return f'<Post: {self.title}>'
+
     def get_absolute_url(self):
         return reverse('post_detail', args=[self.slug])
 

@@ -10,9 +10,7 @@
   <!-- Bootstrap CSS -->
   <link href="{% static 'plugins/css/bootstrap.min.css' %}" type="text/css" media="all" rel="stylesheet">
 
-
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
-
 
   {% block css %}{% endblock %}
   <title>{% block title %}{% endblock %}</title>
@@ -30,24 +28,18 @@
           <li class="nav-item {% active request 'home' %}">
             <a class="nav-link" href="{% url 'home' %}">Home</a>
           </li>
-
           <li class="nav-item {% active request 'about_me' %}">
             <a class="nav-link" href="{% url 'about_me' %}">About me</a>
           </li>
-
           <li class="nav-item {% active request 'contact_info' %}">
             <a class="nav-link" href="{% url 'contact_info' %}">Contact</a>
           </li>
-
           <li class="nav-item {% active request 'categories' %}">
             <a class="nav-link" href="{% url 'categories' %}">Categories</a>
           </li>
-
           <li class="nav-item">
             <a class="nav-link" href="https://github.com/rcybulski1122012">Github</a>
           </li>
-
-
         </ul>
         <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="get">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="query">
@@ -57,8 +49,6 @@
     </div>
   </nav>
 </header>
-
-
 
 <div class="container mt-5">
   {% for message in messages %}
@@ -74,7 +64,6 @@
     {% endblock %}
   </main>
 </div>
-
 
 <script type="text/javascript" src="{% static 'plugins/js/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/js/bootstrap.min.js' %}"></script>
@@ -102,4 +91,3 @@
   </script>
 </body>
 </html>
-

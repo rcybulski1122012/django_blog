@@ -11,6 +11,7 @@ from django.views.generic import TemplateView, ListView
 from blog.forms import CommentForm
 from blog.models import Post, Category
 
+
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
@@ -37,7 +38,7 @@ def post_list(request):
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    likes = int(r.get(f'post:{post.id}:likes')or 0)
+    likes = int(r.get(f'post:{post.id}:likes') or 0)
     liked = request.session.get(f'like-{post.id}', False)
     if request.method == "POST":
         comment_form = CommentForm(request.POST)
@@ -82,3 +83,4 @@ class ContactInfoView(TemplateView):
 
 class CategoryListView(ListView):
     model = Category
+    context_object_name = 'categories'

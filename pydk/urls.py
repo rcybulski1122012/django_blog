@@ -28,6 +28,4 @@ urlpatterns = [
     path('posts/<slug:slug>/', views.post_detail, name='post_detail'),
     path('categories/', views.CategoryListView.as_view(), name='categories'),
     path('martor/', include('martor.urls')),
-
-
 ]
