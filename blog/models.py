@@ -23,6 +23,7 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     published = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
+    likes = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['-created']

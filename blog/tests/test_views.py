@@ -1,5 +1,3 @@
-import redis
-from django.conf import settings
 from django.template import loader
 from django.test import TestCase
 from django.urls import reverse
@@ -119,12 +117,11 @@ class TestPostDetailView(TestCase):
         response = self.comment_post_with_given_slug(slug='slug', comment_author=author, comment_content=content)
         self.assertContains(response, 'To many line breaks!')
 
+    def test_when_site_is_visited_views_counter_is_incremented(self):
+        pass
+
 
 class TestPostLikeView(TestCase):
-    def setUp(self):
-        self.r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_TEST_DB)
-        self.r.flushall()
-
     def like_post(self, post_id):
         return self.client.post(reverse('post_like'), data={'post_id': post_id})
 
@@ -149,12 +146,16 @@ class TestPostLikeView(TestCase):
 
     def test_when_post_is_liked_by_user_decrement_likes(self):
         post = create_post()
+        post.likes = 1
+        post.save()
         self.set_post_liked_session_variable(post_id=post.id, value=True)
         response = self.like_post(post.id)
-        self.assertEqual(response.content, b'-1')
+        self.assertEqual(response.content, b'0')
 
     def test_when_post_is_liked_by_user_post_likes_session_variable_is_set_to_False(self):
         post = create_post()
+        post.likes = 1
+        post.save()
         self.set_post_liked_session_variable(post_id=post.id, value=True)
         self.like_post(post_id=post.id)
         is_liked = self.get_post_liked_session_variable(post.id)

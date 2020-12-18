@@ -122,6 +122,20 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Caches
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': os.environ.get('REDIS_PASSWORD')
+        }
+    },
+}
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -133,27 +147,12 @@ STATIC_ROOT = 'static/'
 
 MARTOR_THEME = 'bootstrap'
 
+
 # Crispy forms
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
-from django.contrib.messages import constants as messages
-
-MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
-}
-
-
-# Redis
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
-REDIS_TEST_DB = 1
-
 # sessions
-SESSION_COOKIE_AGE = 3153600000
+
+SESSION_COOKIE_AGE = 3_153_600_000  # 100 years

@@ -1,27 +1,19 @@
 from django.contrib import admin
 
 from blog.models import Post, Comment, Category
-from blog.views import r
+from blog.views import redis_connection
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created', 'published', 'number_of_likes', 'number_of_views')
+    list_display = ('title', 'created', 'published', 'likes', 'number_of_views')
     list_filter = ('created', 'published')
     prepopulated_fields = {'slug': ('title',)}
     actions = ['publish_selected', 'hide_selected']
 
     @staticmethod
-    def number_of_likes(obj):
-        likes = r.get(f'post:{obj.id}:likes')
-        if likes is not None:
-            return int(likes)
-        else:
-            return 0
-
-    @staticmethod
     def number_of_views(obj):
-        views = r.get(f'post:{obj.id}:views')
+        views = redis_connection.get(f'post:{obj.id}:views')
         if views is not None:
             return int(views)
         else:
@@ -46,5 +38,3 @@ class CommentAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
-
-
