@@ -19,8 +19,8 @@
           <p>{{ post.description }}</p>
         </div>
         <div class="col-md-4 text-md-right">
-          <button class="btn btn-outline-primary" id="like">{% if liked %}Unlike{% else %}Like{% endif%}</button>
-          <div class="my-2">Total likes: <span id="total_likes" class="bold">{{ likes }}</span></div>
+          <button class="btn btn-outline-primary" id="like">{% if is_liked %}Unlike{% else %}Like{% endif%}</button>
+          <div class="my-2">Total likes: <span id="total_likes" class="bold">{{ post.likes }}</span></div>
         </div>
       </div>
     </header>
@@ -78,7 +78,7 @@
     $('#like').click(function(){
       total_likes = parseInt($('#total_likes').text());
       like_or_unlike = $('#like').text()
-      $.post("{% url 'post_like' %}", { post_id: {{ post.id }} }, function(data){
+      $.post("{% url 'blog:post_like' %}", { post_id: {{ post.id }} }, function(data){
         if (like_or_unlike == 'Like'){
           $('#like').text('Unlike');
         }

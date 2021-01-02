@@ -18,3 +18,10 @@ class CommentForm(forms.ModelForm):
         if content.count('\n') > 7:
             raise ValidationError('To many line breaks!')
         return content
+
+    def save_with_post(self, post):
+        comment = self.save(commit=False)
+        comment.post = post
+        comment.save()
+        return comment
+

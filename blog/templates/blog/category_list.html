@@ -4,6 +4,6 @@
 
 {% block content %}
   {% for category in categories %}
-    <a href="{% url 'home' %}?c={{ category.slug }}"><h3>{{ category.name }}</h3></a>
+    <a href="{% url 'blog:post_list' %}?c={{ category.slug }}"><h3>{{ category.name }}</h3></a>
   {% endfor %}
 {% endblock %}

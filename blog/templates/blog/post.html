@@ -1,6 +1,6 @@
 <article class="my-5">
   <header>
-    <small class="text-secondary">{{ post.created|date:"Y/m/d G:i" }}</small>
+    <small class="text-secondary">{{ post.created|date:'Y/m/d G:i' }}</small>
     <a href="{{ post.get_absolute_url }}" class="post-link text-reset text-decoration-none"><h2>{{ post.title }}</h2></a>
   </header>
   <p class="description">

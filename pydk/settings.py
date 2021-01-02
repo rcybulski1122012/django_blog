@@ -13,6 +13,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django_redis import get_redis_connection
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -57,7 +59,9 @@ ROOT_URLCONF = 'pydk.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'common' / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -156,3 +160,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # sessions
 
 SESSION_COOKIE_AGE = 3_153_600_000  # 100 years
+
+
+# pagination
+
+POSTS_PER_PAGE = 10

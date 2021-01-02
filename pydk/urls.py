@@ -16,16 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from blog import views
+from common import views as common_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.post_list, name='home'),
-    path('search/', views.search, name='search'),
-    path('post_like/', views.post_like, name='post_like'),
-    path('contact_info/', views.ContactInfoView.as_view(), name='contact_info'),
-    path('about_me/', views.AboutMeView.as_view(), name='about_me'),
-    path('posts/<slug:slug>/', views.post_detail, name='post_detail'),
-    path('categories/', views.CategoryListView.as_view(), name='categories'),
+    path('contact_info/', common_views.ContactInfoView.as_view(), name='contact_info'),
+    path('about_me/', common_views.AboutMeView.as_view(), name='about_me'),
     path('martor/', include('martor.urls')),
+    path('', include('blog.urls', namespace='blog')),
 ]

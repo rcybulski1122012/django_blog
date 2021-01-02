@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load blog_tags %}
 
 {% block title %}Home Page{% endblock %}
 
@@ -13,17 +14,18 @@
 {% endblock %}
 
 {% block domready %}
-  var page = 1;
+  var page = {% page request %};
   var empty_page = false;
   var block_request = false;
 
   $(window).scroll(function() {
+      var category = '{% category request %}'
       var position = $(window).scrollTop();
       var bottom = $(document).height() - $(window).height();
-      if (position == bottom && empty_page == false && block_request == false) {
+      if (position + 50 >= bottom && empty_page == false && block_request == false) {
         block_request = true;
         page += 1;
-        $.get('?page=' + page, function(data) {
+        $.get('?page=' + page + '&c=' + category , function(data) {
           if(data == ''){
             empty_page = true;
           }
