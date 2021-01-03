@@ -10,7 +10,7 @@ class TestPostListView(BlogTest):
     def test_when_there_are_no_posts_should_display_appropriate_message(self):
         response = self.client.get(reverse('blog:post_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'No posts yet.')
+        self.assertContains(response, 'There are no posts yet')
 
     def test_display_only_published_post(self):
         self.create_post(title='Published post', slug='published-post')
@@ -145,6 +145,13 @@ class TestPostLikeView(BlogTest):
         response = self.like_post(post_id='9999999999')
         self.assertEqual(response.status_code, 404)
 
+    def test_when_given_id_is_not_int_should_return_404(self):
+        response = self.like_post(post_id=['test'])
+        self.assertEqual(response.status_code, 404)
+
+        response = self.like_post(post_id='test')
+        self.assertEqual(response.status_code, 404)
+
 
 # class TestSearchView(BlogTest):
 #     def test_when_there_are_no_similar_posts_should_display_appropriate_message(self):
@@ -171,8 +178,26 @@ class TestCategoryListView(TestCase):
         self.assertQuerysetEqual(response.context['categories'], ['<Category: Category1>', '<Category: Category2>'],
                                  ordered=False)
 
-    def test_generate_proper_urls(self):
-        response = self.client.get(reverse('blog:categories'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(bytes(reverse('blog:post_list') + '?c=category1', encoding='utf-8'), response.content)
-        self.assertIn(bytes(reverse('blog:post_list') + '?c=category2', encoding='utf-8'), response.content)
+
+class TestTopPostsView(BlogTest):
+    def test_when_there_are_no_posts_should_display_appropriate_message(self):
+        response = self.client.get(reverse('blog:top_posts'))
+        self.assertContains(response, 'There are no posts yet.')
+
+    def test_should_display_top_5_posts_by_views(self):
+        posts = [self.create_post(title=str(i), slug=str(i)) for i in range(10)]
+        for i, post in enumerate(posts[:5]):
+            post._views_counter._set_number_of_views(i)
+        expected_context = ['<Post: 9>', '<Post: 8>', '<Post: 7>', '<Post: 6>', '<Post: 5>']
+        response = self.client.get(reverse('blog:top_posts'))
+        self.assertQuerysetEqual(response.context['top_viewed_posts'], expected_context)
+
+    def test_should_display_top_5_posts_by_likes(self):
+        posts = [self.create_post(title=char, slug=char) for char in 'abcdef']
+        for i, post in enumerate(posts[:-1]):
+            post.likes = i + 1
+            post.save()
+
+        expected_context = ['<Post: e>', '<Post: d>', '<Post: c>', '<Post: b>', '<Post: a>']
+        response = self.client.get(reverse('blog:top_posts'))
+        self.assertQuerysetEqual(response.context['top_liked_posts'], expected_context)

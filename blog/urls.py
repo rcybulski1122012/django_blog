@@ -10,4 +10,5 @@ urlpatterns = [
     path('post_like/', views.post_like, name='post_like'),
     path('posts/<slug:slug>/', views.post_detail, name='post_detail'),
     path('categories/', views.CategoryListView.as_view(), name='categories'),
+    path('top-posts/', views.top_posts, name='top_posts')
 ]

@@ -18,7 +18,7 @@
 <body class="pb-3">
 <header>
   <nav class="navbar navbar-expand-md navbar-light bg-light shadow">
-    <div class="container-md">
+    <div class="container-sm">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler"
               aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -37,8 +37,8 @@
           <li class="nav-item {% active request 'blog:categories' %}">
             <a class="nav-link" href="{% url 'blog:categories' %}">Categories</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="https://github.com/rcybulski1122012">Github</a>
+          <li class="nav-item {% active request 'blog:top_posts' %}">
+            <a class="nav-link" href="{% url 'blog:top_posts' %}">Top posts</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" action="{% url 'blog:search' %}" method="get">

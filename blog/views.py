@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import ListView
@@ -61,7 +61,10 @@ def post_detail(request, slug):
 
 @ajax_required
 def post_like(request):
-    post_id = int(request.POST.get('post_id', 0))
+    try:
+        post_id = int(request.POST.get('post_id'))
+    except (TypeError, ValueError):
+        raise Http404('Invalid value for post_id')
     post = get_object_or_404(Post.objects.published(), id=post_id)
     post.like(request)
     return HttpResponse(post.likes)
@@ -77,3 +80,22 @@ class CategoryListView(ListView):
     model = Category
     template_name = 'blog/category_list.html'
     context_object_name = 'categories'
+
+
+def top_posts(request):
+    top_viewed_posts = _get_top_5_viewed_posts()
+
+    top_liked_posts = _get_top_5_liked_posts()
+    return render(request, 'blog/top_posts.html', {'top_viewed_posts': top_viewed_posts,
+                                                   'top_liked_posts': top_liked_posts})
+
+
+def _get_top_5_liked_posts():
+    return Post.objects.published().order_by('-likes')[:5]
+
+
+def _get_top_5_viewed_posts():
+    top_viewed_posts = list(Post.objects.published())
+    top_viewed_posts.sort(key=lambda x: x.number_of_views, reverse=True)
+    top_viewed_posts = top_viewed_posts[:5]
+    return top_viewed_posts

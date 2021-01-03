@@ -8,7 +8,7 @@
     {% for post in posts %}
       {% include 'blog/post.html' with post=post %}
     {% empty %}
-      No posts yet.
+      There are no posts yet
     {% endfor %}
   </article>
 {% endblock %}
