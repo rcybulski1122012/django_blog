@@ -8,59 +8,59 @@ from blog.tests.utils import BlogTest
 
 class TestPostListView(BlogTest):
     def test_when_there_are_no_posts_should_display_appropriate_message(self):
-        response = self.client.get(reverse('blog:post_list'))
-        self.assertEqual(response.status_code, 200)
+        response = self.get_post_list()
         self.assertContains(response, 'There are no posts yet')
 
     def test_display_only_published_post(self):
         self.create_post(title='Published post', slug='published-post')
         self.create_post(title='Unpublished post', slug='unpublished-post', is_published=False)
-        response = self.client.get(reverse('blog:post_list'))
-        self.assertEqual(response.status_code, 200)
+        response = self.get_post_list()
         self.assertQuerysetEqual(response.context['posts'], ['<Post: Published post>'])
 
     # Paginator displays only 10 posts per page
     def test_when_first_page_is_given_should_display_only_10_posts(self):
         self.create_n_posts(n=12)
-        expected_post_context = ['<Post: 11>', '<Post: 10>', '<Post: 9>', '<Post: 8>', '<Post: 7>',
-                                 '<Post: 6>', '<Post: 5>', '<Post: 4>', '<Post: 3>', '<Post: 2>']
-        response = self.client.get(reverse('blog:post_list'))
-        self.assertQuerysetEqual(response.context['posts'], expected_post_context)
+        expected_context = ['<Post: 11>', '<Post: 10>', '<Post: 9>', '<Post: 8>', '<Post: 7>',
+                            '<Post: 6>', '<Post: 5>', '<Post: 4>', '<Post: 3>', '<Post: 2>']
+        response = self.get_post_list()
+        self.assertQuerysetEqual(response.context['posts'], expected_context)
 
     def test_when_last_page_is_given_should_display_only_rest_of_posts(self):
         self.create_n_posts(n=12)
-        expected_post_context = ['<Post: 1>', '<Post: 0>']
-        response = self.client.get(f'{reverse("blog:post_list")}/?page=2')
-        self.assertQuerysetEqual(response.context['posts'], expected_post_context)
+        expected_context = ['<Post: 1>', '<Post: 0>']
+        response = self.get_post_list(page=2)
+        self.assertQuerysetEqual(response.context['posts'], expected_context)
 
     def test_when_page_is_not_int_should_return_first_page(self):
         self.create_n_posts(n=12)
-        expected_post_context = ['<Post: 11>', '<Post: 10>', '<Post: 9>', '<Post: 8>', '<Post: 7>',
-                                 '<Post: 6>', '<Post: 5>', '<Post: 4>', '<Post: 3>', '<Post: 2>']
-        response = self.client.get(f'{reverse("blog:post_list")}/?page=not-int')
-        self.assertQuerysetEqual(response.context['posts'], expected_post_context)
+        expected_context = ['<Post: 11>', '<Post: 10>', '<Post: 9>', '<Post: 8>', '<Post: 7>',
+                            '<Post: 6>', '<Post: 5>', '<Post: 4>', '<Post: 3>', '<Post: 2>']
+        response = self.get_post_list(page='not-int')
+        self.assertQuerysetEqual(response.context['posts'], expected_context)
 
     def test_when_given_page_number_is_bigger_than_number_of_all_pages_should_return_last_page(self):
         self.create_n_posts(n=12)
-        expected_post_context = ['<Post: 1>', '<Post: 0>']
-        response = self.client.get(f'{reverse("blog:post_list")}/?page=3')
-        self.assertQuerysetEqual(response.context['posts'], expected_post_context)
+        expected_context = ['<Post: 1>', '<Post: 0>']
+        response = self.get_post_list(page=3)
+        self.assertQuerysetEqual(response.context['posts'], expected_context)
 
     def test_when_category_is_not_given_should_display_all_posts(self):
         category1 = Category.objects.create(name='Category1', slug='c1')
         category2 = Category.objects.create(name='Category2', slug='c2')
         self.create_post(title='Category 1 post', slug='c1', category=category1)
         self.create_post(title='Category 2 post', slug='c2', category=category2)
-        response = self.client.get(reverse("blog:post_list"))
-        self.assertQuerysetEqual(response.context['posts'], ['<Post: Category 2 post>', '<Post: Category 1 post>'])
+        expected_context = ['<Post: Category 2 post>', '<Post: Category 1 post>']
+        response = self.get_post_list()
+        self.assertQuerysetEqual(response.context['posts'], expected_context)
 
     def test_should_display_posts_in_given_category(self):
         category1 = Category.objects.create(name='Category1', slug='c1')
         category2 = Category.objects.create(name='Category2', slug='c2')
         self.create_post(title='Category 1 post', slug='c1', category=category1)
         self.create_post(title='Category 2 post', slug='c2', category=category2)
-        response = self.client.get(f'{reverse("blog:post_list")}/?c=c1')
-        self.assertQuerysetEqual(response.context['posts'], ['<Post: Category 1 post>'])
+        expected_context = ['<Post: Category 1 post>']
+        response = self.get_post_list(category='c1')
+        self.assertQuerysetEqual(response.context['posts'], expected_context)
 
     def test_when_request_is_ajax_should_return_posts_html(self):
         self.create_n_posts(n=12)
@@ -174,9 +174,8 @@ class TestCategoryListView(TestCase):
 
     def test_displays_categories(self):
         response = self.client.get(reverse('blog:categories'))
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context['categories'], ['<Category: Category1>', '<Category: Category2>'],
-                                 ordered=False)
+        expected_context = ['<Category: Category1>', '<Category: Category2>']
+        self.assertQuerysetEqual(response.context['categories'], expected_context, ordered=False)
 
 
 class TestTopPostsView(BlogTest):
@@ -197,7 +196,6 @@ class TestTopPostsView(BlogTest):
         for i, post in enumerate(posts[:-1]):
             post.likes = i + 1
             post.save()
-
         expected_context = ['<Post: e>', '<Post: d>', '<Post: c>', '<Post: b>', '<Post: a>']
         response = self.client.get(reverse('blog:top_posts'))
         self.assertQuerysetEqual(response.context['top_liked_posts'], expected_context)

@@ -15,6 +15,10 @@ class BlogTest(TestCase):
         for i in range(n):
             BlogTest.create_post(title=str(i), slug=str(i))
 
+    def get_post_list(self, category='', page=''):
+        blog_url = reverse('blog:post_list')
+        return self.client.get(f'{blog_url}?c={category}&page={page}')
+
     def get_ajax_request(self, url):
         return self.client.get(url, **{'HTTP_X_REQUESTED_WITH': 'XMLHttpRequest'})
 

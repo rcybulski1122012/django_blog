@@ -1,5 +1,3 @@
-from django.test import TestCase
-
 from blog.forms import CommentForm
 from blog.tests.utils import BlogTest
 

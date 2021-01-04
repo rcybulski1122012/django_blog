@@ -1,12 +1,12 @@
 from django.http import HttpRequest
-from django.test import  SimpleTestCase
+from django.test import SimpleTestCase
 
 from blog.templatetags.blog_tags import is_navbar_item_active, get_category, get_number_of_current_page
 
 
 class TestIsNavbarItemActiveTag(SimpleTestCase):
     def setUp(self):
-        # testing with 'post_list' view whose url is '/'
+        # testing with post_list view whose url is '/'
         self.request = HttpRequest()
         self.request.path = '/'
 

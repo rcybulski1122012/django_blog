@@ -18,19 +18,15 @@ class TestViewsCounter(SimpleTestCase):
     def test_get_number_of_views_when_value_is_set_should_return_it(self):
         PostViewsCounter(self.post)._set_number_of_views(5)
         number_of_views = PostViewsCounter(self.post).get_number_of_views()
-
         self.assertEqual(number_of_views, 5)
 
     def test_get_number_of_views_when_value_is_not_set_should_return_0(self):
         number_of_views = PostViewsCounter(self.post).get_number_of_views()
-
         self.assertEqual(number_of_views, 0)
 
     def test_increment_views_counter(self):
         views_counter = PostViewsCounter(self.post)
         views_counter._set_number_of_views(5)
-
         views_counter.increment()
-
         number_of_views_after = views_counter.get_number_of_views()
         self.assertEqual(number_of_views_after, 6)
