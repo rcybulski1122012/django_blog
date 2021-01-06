@@ -6,14 +6,10 @@ from blog.models import Post, Comment, Category
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'created', 'is_published', 'likes', 'number_of_views')
+    readonly_fields = ('likes',)
     list_filter = ('created', 'is_published', 'category')
     prepopulated_fields = {'slug': ('title',)}
     actions = ('publish_selected', 'hide_selected')
-
-    def get_readonly_fields(self, request, obj=None):
-        if obj:
-            return ['likes']
-        return self.readonly_fields
 
     @staticmethod
     def publish_selected(modeladmin, request, queryset):
