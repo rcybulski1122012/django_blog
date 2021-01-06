@@ -10,6 +10,11 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     actions = ('publish_selected', 'hide_selected')
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return ['likes']
+        return self.readonly_fields
+
     @staticmethod
     def publish_selected(modeladmin, request, queryset):
         queryset.update(is_published=True)
