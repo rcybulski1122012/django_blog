@@ -10,22 +10,22 @@ from blog.models import Post, Category
 from common.decorators import ajax_required
 
 
-def post_list(request):
+def post_list_view(request):
     category_slug = request.GET.get('c', None)
     posts = Post.objects.published()
     page = request.GET.get('page')
     if category_slug:
         posts = posts.filter(category__slug=category_slug)
     paginator = Paginator(posts, settings.POSTS_PER_PAGE)
-    posts = _get_posts_for_page(paginator, page)
+    posts = get_posts_for_page(paginator, page)
 
     if request.is_ajax():
-        return _render_post_list_ajax(request, posts, page, paginator)
+        return render_post_list_ajax(request, posts, page, paginator)
     else:
-        return _render_post_list(request, posts)
+        return render_post_list(request, posts)
 
 
-def _get_posts_for_page(paginator, page):
+def get_posts_for_page(paginator, page):
     try:
         return paginator.page(page)
     except PageNotAnInteger:
@@ -34,18 +34,18 @@ def _get_posts_for_page(paginator, page):
         return paginator.page(paginator.num_pages)
 
 
-def _render_post_list(request, posts):
+def render_post_list(request, posts):
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
-def _render_post_list_ajax(request, posts, page, paginator):
+def render_post_list_ajax(request, posts, page, paginator):
     if int(page) > paginator.num_pages:
         return HttpResponse('')
     else:
         return render(request, 'blog/post_ajax.html', {'posts': posts})
 
 
-def post_detail(request, slug):
+def post_detail_view(request, slug):
     post = get_object_or_404(Post.objects.published(), slug=slug)
     post.increment_views_counter()
     is_liked = post.is_liked(request)
@@ -60,7 +60,7 @@ def post_detail(request, slug):
 
 
 @ajax_required
-def post_like(request):
+def post_like_view(request):
     try:
         post_id = int(request.POST.get('post_id'))
     except (TypeError, ValueError):
@@ -70,7 +70,7 @@ def post_like(request):
     return HttpResponse(post.likes)
 
 
-def search(request):
+def search_view(request):
     query = request.GET.get('query', '')
     posts = Post.objects.published().get_similar(title=query)
     return render(request, 'blog/search.html', {'query': query, 'posts': posts})
@@ -82,19 +82,19 @@ class CategoryListView(ListView):
     context_object_name = 'categories'
 
 
-def top_posts(request):
-    top_viewed_posts = _get_top_5_viewed_posts()
+def top_posts_view(request):
+    top_viewed_posts = get_top_5_viewed_posts()
 
-    top_liked_posts = _get_top_5_liked_posts()
+    top_liked_posts = get_top_5_liked_posts()
     return render(request, 'blog/top_posts.html', {'top_viewed_posts': top_viewed_posts,
                                                    'top_liked_posts': top_liked_posts})
 
 
-def _get_top_5_liked_posts():
+def get_top_5_liked_posts():
     return Post.objects.published().order_by('-likes')[:5]
 
 
-def _get_top_5_viewed_posts():
+def get_top_5_viewed_posts():
     top_viewed_posts = list(Post.objects.published())
     top_viewed_posts.sort(key=lambda x: x.number_of_views, reverse=True)
     top_viewed_posts = top_viewed_posts[:5]
