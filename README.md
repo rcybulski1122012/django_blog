@@ -1,7 +1,6 @@
 # Django Blog
-Simple blog app created with Django. The main purpose of this project 
-was to consolidate knowledge about Django
-and learn something about Bootstrap, JavaScript, Redis and PostgreSQL.
+Simple blog app created with Django. The main reason, why I created it, was to consolidate knowledge
+about Django and learn something about Bootstrap, JavaScript, Redis and PostgreSQL.
 
 [Live version](https://rcybulski.herokuapp.com/)  
 Login: **code_review_123**  
