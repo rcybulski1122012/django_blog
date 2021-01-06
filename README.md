@@ -3,7 +3,9 @@ Simple blog app created with Django. The main purpose of this project
 was to consolidate knowledge about Django
 and learn something about Bootstrap, JavaScript, Redis and PostgreSQL.
 
-[Live version](https://rcybulski.herokuapp.com/)
+[Live version](https://rcybulski.herokuapp.com/)  
+Login: **code_review_123**  
+Password: **code_review_password_123**
 
 
 ## Features
