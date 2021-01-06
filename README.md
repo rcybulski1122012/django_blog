@@ -5,6 +5,7 @@ and learn something about Bootstrap, JavaScript, Redis and PostgreSQL.
 
 [Live version](https://rcybulski.herokuapp.com/)
 
+
 ## Features
 * Display posts with infinite scroll
 * Filter posts by category
@@ -14,6 +15,12 @@ and learn something about Bootstrap, JavaScript, Redis and PostgreSQL.
 * Like and comment posts
 * Count views
 * Full text search
+
+#### Example post
+![example post](https://raw.githubusercontent.com/rcybulski1122012/django_blog/media/readme_images/example_post.png)
+
+#### Home page
+![home page](https://raw.githubusercontent.com/rcybulski1122012/django_blog/media/readme_images/home_page.png)
 
 ## Technologies
 * Python 3.8
