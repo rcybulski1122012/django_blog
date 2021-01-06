@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from django_redis import get_redis_connection
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
